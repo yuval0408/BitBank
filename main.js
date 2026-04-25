@@ -256,6 +256,16 @@ document.getElementById('withdrawBtn')?.addEventListener('click', () => {
   document.getElementById('withdrawAmount').value = '';
 });
 
+// --- GLOBAL BALANCE STATE ---
+let btcBalance = 2.5;
+
+function updateBalanceDisplay() {
+  const balanceEl = document.getElementById('balanceAmount');
+  const btcEl = document.getElementById('btcBalance');
+  if (balanceEl) balanceEl.textContent = btcBalance.toFixed(2) + ' BTC';
+  if (btcEl) btcEl.textContent = btcBalance.toFixed(2) + ' BTC';
+}
+
 // --- INHERITE STEPS ---
 window.nextStep = function(n) {
   document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
@@ -277,11 +287,89 @@ window.nextStep = function(n) {
 window.submitClaim = function() {
   const consent = document.getElementById('consent');
   if (!consent.checked) { showToast('Please agree to the declaration'); return; }
-  const amount = document.getElementById('inheritAmount')?.value || '500';
+  
+  const amount = parseFloat(document.getElementById('inheritAmount')?.value) || 500;
   const statusAmount = document.getElementById('statusAmount');
   if (statusAmount) statusAmount.textContent = amount + ' BTC';
-  showToast('Inheritance claim for ' + amount + ' BTC submitted successfully! 🔐');
+  
+  showToast('Inheritance claim submitted! Verifying... 🔐');
   setTimeout(() => window.nextStep(4), 600);
+  
+  // Simulate verification process (3 seconds) then credit the BTC
+  const statusCard = document.getElementById('statusCard');
+  
+  // After 3s: mark Identity Verification as done
+  setTimeout(() => {
+    const tlItems = statusCard?.querySelectorAll('.tl-item');
+    if (tlItems && tlItems[1]) {
+      tlItems[1].classList.remove('active');
+      tlItems[1].classList.add('done');
+      tlItems[1].querySelector('small').textContent = 'Verified ✓';
+      tlItems[2].classList.add('active');
+      tlItems[2].querySelector('small').textContent = 'In progress...';
+    }
+    showToast('Identity & Relationship verified ✓');
+  }, 3000);
+  
+  // After 5s: mark Document Review as done
+  setTimeout(() => {
+    const tlItems = statusCard?.querySelectorAll('.tl-item');
+    if (tlItems && tlItems[2]) {
+      tlItems[2].classList.remove('active');
+      tlItems[2].classList.add('done');
+      tlItems[2].querySelector('small').textContent = 'Approved ✓';
+      tlItems[3].classList.add('active');
+      tlItems[3].querySelector('small').textContent = 'Transferring...';
+    }
+    showToast('Documents approved ✓');
+  }, 5000);
+  
+  // After 7s: Complete the transfer — credit BTC to balance
+  setTimeout(() => {
+    const tlItems = statusCard?.querySelectorAll('.tl-item');
+    if (tlItems && tlItems[3]) {
+      tlItems[3].classList.remove('active');
+      tlItems[3].classList.add('done');
+      tlItems[3].querySelector('small').textContent = 'Completed ✓';
+    }
+    
+    // Update the status card to show success
+    const statusIcon = statusCard?.querySelector('.status-icon');
+    if (statusIcon) {
+      statusIcon.textContent = '✅';
+      statusIcon.classList.remove('pending');
+      statusIcon.classList.add('done');
+    }
+    const statusTitle = statusCard?.querySelector('h3');
+    if (statusTitle) statusTitle.textContent = 'Inheritance Complete!';
+    const statusDesc = statusCard?.querySelector('p');
+    if (statusDesc) statusDesc.innerHTML = '<strong>' + amount + ' BTC</strong> has been successfully transferred to your vault. Your balance has been updated.';
+    
+    // Credit the BTC to the user's balance
+    btcBalance += amount;
+    updateBalanceDisplay();
+    
+    // Update balance change text
+    const balanceChange = document.getElementById('balanceChange');
+    if (balanceChange) balanceChange.textContent = '+' + amount + ' BTC from inheritance';
+    
+    // Add inheritance transaction to the list
+    const deceasedName = document.getElementById('deceasedName')?.value || 'Unknown';
+    const relationship = document.getElementById('relationship')?.value || 'Relation';
+    transactions.unshift({
+      type: 'received',
+      icon: '↓',
+      name: 'Inheritance from ' + deceasedName,
+      desc: 'Inherite claim (' + relationship + ') — Verified & Approved',
+      amount: amount,
+      currency: 'BTC',
+      status: 'success',
+      time: 'Just now'
+    });
+    renderTransactions('all');
+    
+    showToast('🎉 ' + amount + ' BTC deposited to your vault!');
+  }, 7000);
 };
 
 // File upload visual feedback
