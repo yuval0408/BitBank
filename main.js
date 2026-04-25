@@ -1,0 +1,304 @@
+// ===== BIT BANK — Main JS =====
+
+// --- LOGIN GATE & AUTH TOGGLE ---
+let isLoginMode = false;
+
+function toggleAuthMode() {
+  isLoginMode = !isLoginMode;
+  
+  const formTitle = document.getElementById('formTitle');
+  const formSubtitle = document.getElementById('formSubtitle');
+  const submitBtn = document.getElementById('submitAuthBtn');
+  const toggleText = document.querySelector('.auth-switch p');
+  
+  const registerFields = document.getElementById('registerFields');
+  const loginOnlyFields = document.getElementById('loginOnlyFields');
+
+  if (isLoginMode) {
+    formTitle.textContent = 'Welcome Back';
+    formSubtitle.textContent = 'Login to access your secure account.';
+    submitBtn.textContent = 'Login';
+    toggleText.innerHTML = 'New to BIT BANK? <span id="toggleAuthMode">Create an account</span>';
+    
+    registerFields.style.display = 'none';
+    loginOnlyFields.style.display = 'block';
+    
+    // Remove required from register fields
+    document.querySelectorAll('#registerFields input').forEach(input => input.removeAttribute('required'));
+    document.querySelectorAll('#loginOnlyFields input').forEach(input => input.setAttribute('required', 'true'));
+  } else {
+    formTitle.textContent = 'Create Account';
+    formSubtitle.textContent = 'Join BIT BANK to secure your digital legacy.';
+    submitBtn.textContent = 'Create Account';
+    toggleText.innerHTML = 'Already have an account? <span id="toggleAuthMode">Login here</span>';
+    
+    registerFields.style.display = 'block';
+    loginOnlyFields.style.display = 'none';
+    
+    // Add required back
+    document.querySelectorAll('#registerFields input').forEach(input => input.setAttribute('required', 'true'));
+    document.querySelectorAll('#loginOnlyFields input').forEach(input => input.removeAttribute('required'));
+  }
+  
+  // Re-attach listener since we replaced innerHTML of the parent
+  document.getElementById('toggleAuthMode')?.addEventListener('click', toggleAuthMode);
+}
+
+document.getElementById('toggleAuthMode')?.addEventListener('click', toggleAuthMode);
+
+document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  let name = 'User';
+  let email = '';
+  let contact = '';
+  
+  if (!isLoginMode) {
+    name = document.getElementById('loginName').value;
+    email = document.getElementById('loginEmail').value;
+    contact = document.getElementById('loginContact').value;
+    const aadhar = document.getElementById('loginId').value;
+    const pass = document.getElementById('loginPassword').value;
+    const confirmPass = document.getElementById('loginConfirmPassword').value;
+    
+    if (pass !== confirmPass) {
+      showToast('Passwords do not match!');
+      return;
+    }
+    
+    if(!name || !email || !contact || !aadhar || !pass) {
+      showToast('Please fill all fields');
+      return;
+    }
+  } else {
+    email = document.getElementById('existingEmail').value;
+    const pass = document.getElementById('existingPassword').value;
+    
+    if(!email || !pass) {
+      showToast('Please enter email and password');
+      return;
+    }
+    name = email.split('@')[0]; // Mock name from email
+    contact = '+1 000 000 0000'; // Mock contact
+  }
+
+  // Success path
+  document.getElementById('profileName').textContent = name;
+  document.getElementById('profileEmail').textContent = email;
+  document.getElementById('profileContact').textContent = contact;
+  
+  const loginGate = document.getElementById('loginGate');
+  
+  // Smooth fade out
+  loginGate.style.opacity = '0';
+  
+  // Hide the 3D Bitcoin background
+  const coinCanvas = document.getElementById('coinCanvas');
+  if (coinCanvas) {
+    coinCanvas.style.transition = 'opacity 0.5s ease';
+    coinCanvas.style.opacity = '0';
+  }
+
+  setTimeout(() => {
+    loginGate.style.display = 'none';
+    if (coinCanvas) coinCanvas.style.display = 'none';
+    document.getElementById('mainAppContainer').style.display = 'block';
+    
+    // Initialize things that rely on visibility
+    setTimeout(() => {
+      initReveals();
+      const event = new Event('scroll');
+      window.dispatchEvent(event);
+    }, 100);
+    
+    showToast(isLoginMode ? 'Login Successful!' : 'Account Created Successfully!');
+  }, 500); // Wait for CSS transition
+});
+
+// --- NAVIGATION ---
+const navbar = document.getElementById('navbar');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+
+// --- PAGE ROUTING ---
+document.querySelectorAll('[data-page]').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const page = link.dataset.page;
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+    link.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navLinks.classList.remove('open');
+    setTimeout(initReveals, 100);
+    if (page === 'transaction') renderTransactions('all');
+  });
+});
+
+// --- SCROLL REVEAL ---
+function initReveals() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+initReveals();
+
+// --- STAT COUNTERS ---
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseFloat(el.dataset.target);
+      const isMoney = target === 2.5;
+      const isPercent = target === 99.9;
+      let current = 0;
+      const step = target / 60;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        if (isMoney) el.textContent = '$' + current.toFixed(1) + 'B+';
+        else if (isPercent) el.textContent = current.toFixed(1) + '%';
+        else el.textContent = Math.floor(current).toLocaleString() + '+';
+      }, 25);
+      statObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-num').forEach(el => statObserver.observe(el));
+
+// --- TRANSACTION DATA ---
+const transactions = [
+  { type: 'sent', icon: '↑', name: 'Rahul Sharma', desc: 'Payment for dinner', amount: -0.0015, currency: 'BTC', status: 'success', time: 'Today, 7:42 PM' },
+  { type: 'received', icon: '↓', name: 'Priya Mehta', desc: 'Freelance payment', amount: 1.2, currency: 'ETH', status: 'success', time: 'Today, 3:15 PM' },
+  { type: 'sent', icon: '↑', name: 'Server Hosting', desc: 'Online purchase', amount: -0.5, currency: 'SOL', status: 'success', time: 'Today, 11:30 AM' },
+  { type: 'failed', icon: '✕', name: 'Vikram Singh', desc: 'Insufficient balance — Retry available', amount: -0.05, currency: 'BTC', status: 'failed', time: 'Yesterday, 9:22 PM' },
+  { type: 'swap', icon: '⇄', name: 'BTC → SOL', desc: 'Converted 0.005 BTC', amount: 0, currency: '', status: 'success', time: 'Yesterday, 6:10 PM', swapVal: '0.005 BTC → 15 SOL' },
+  { type: 'received', icon: '↓', name: 'Ankit Patel', desc: 'Rent share', amount: 3.5, currency: 'ETH', status: 'success', time: 'Apr 20, 10:00 AM' },
+  { type: 'sent', icon: '↑', name: 'Software License', desc: 'Monthly subscription', amount: -0.1, currency: 'SOL', status: 'success', time: 'Apr 19, 12:00 AM' },
+  { type: 'received', icon: '↓', name: 'Salary Credit', desc: 'April 2026 salary', amount: 0.15, currency: 'BTC', status: 'success', time: 'Apr 18, 9:00 AM' },
+  { type: 'sent', icon: '↑', name: 'Meena Kapoor', desc: 'Birthday gift', amount: -2.0, currency: 'SOL', status: 'pending', time: 'Apr 17, 5:30 PM' },
+  { type: 'failed', icon: '✕', name: 'Hardware Wallet Store', desc: 'Compliance check failed — Contact support', amount: -0.8, currency: 'ETH', status: 'failed', time: 'Apr 16, 2:15 PM' },
+];
+
+function renderTransactions(filter) {
+  const list = document.getElementById('txnList');
+  if (!list) return;
+  const filtered = filter === 'all' ? transactions : transactions.filter(t => t.type === filter);
+  list.innerHTML = filtered.map(t => `
+    <div class="txn-item">
+      <div class="txn-icon ${t.type}">${t.icon}</div>
+      <div class="txn-info">
+        <strong>${t.name}</strong>
+        <small>${t.desc}</small>
+      </div>
+      <span class="txn-status ${t.status}">${t.status}</span>
+      <div class="txn-amount ${t.amount < 0 ? 'negative' : t.amount > 0 ? 'positive' : ''}">
+        <strong>${t.type === 'swap' ? t.swapVal : (t.amount > 0 ? '+' : '') + Math.abs(t.amount) + ' ' + t.currency}</strong>
+        <small>${t.time}</small>
+      </div>
+    </div>
+  `).join('');
+}
+renderTransactions('all');
+
+document.getElementById('txnFilter')?.addEventListener('change', (e) => {
+  renderTransactions(e.target.value);
+});
+
+// --- SEND BITCOINS ---
+document.getElementById('sendBtn')?.addEventListener('click', () => {
+  const rec = document.getElementById('recipientInput').value;
+  const amt = document.getElementById('amountInput').value;
+  if (!rec || !amt) { showToast('Please fill in recipient and amount'); return; }
+  showToast(`${parseFloat(amt)} BTC sent to ${rec} ✓`);
+  document.getElementById('recipientInput').value = '';
+  document.getElementById('amountInput').value = '';
+  document.getElementById('noteInput').value = '';
+});
+
+// --- DEPOSIT CRYPTO ---
+document.getElementById('depositBtn')?.addEventListener('click', () => {
+  const currency = document.getElementById('depositCurrency').value;
+  const amt = document.getElementById('depositAmount').value;
+  const address = document.getElementById('depositAddress').value;
+  if (!address || !amt) { showToast('Please fill in address and amount'); return; }
+  showToast(`${parseFloat(amt)} ${currency} deposit initiated ✓`);
+  document.getElementById('depositAmount').value = '';
+  document.getElementById('depositAddress').value = '';
+});
+
+// --- WITHDRAW CRYPTO ---
+document.getElementById('withdrawBtn')?.addEventListener('click', () => {
+  const currency = document.getElementById('withdrawCurrency').value;
+  const address = document.getElementById('withdrawAddress').value;
+  const amt = document.getElementById('withdrawAmount').value;
+  if (!address || !amt) { showToast('Please fill in address and amount'); return; }
+  showToast(`${parseFloat(amt)} ${currency} withdrawal to ${address} initiated ✓`);
+  document.getElementById('withdrawAddress').value = '';
+  document.getElementById('withdrawAmount').value = '';
+});
+
+// --- INHERITE STEPS ---
+window.nextStep = function(n) {
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+  const step = document.getElementById('step' + n);
+  if (step) {
+    step.classList.add('active');
+    step.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  if (n === 3) {
+    document.getElementById('revName').textContent = document.getElementById('claimantName')?.value || '—';
+    document.getElementById('revAadhaar').textContent = document.getElementById('claimantAadhaar')?.value || '—';
+    document.getElementById('revDeceased').textContent = document.getElementById('deceasedName')?.value || '—';
+    document.getElementById('revRelation').textContent = document.getElementById('relationship')?.value || '—';
+  }
+};
+
+window.submitClaim = function() {
+  const consent = document.getElementById('consent');
+  if (!consent.checked) { showToast('Please agree to the declaration'); return; }
+  showToast('Claim submitted successfully! 🔐');
+  setTimeout(() => window.nextStep(4), 600);
+};
+
+// File upload visual feedback
+document.querySelectorAll('.upload-area').forEach(area => {
+  const input = area.querySelector('.file-input');
+  if (input) {
+    input.addEventListener('change', () => {
+      if (input.files.length > 0) {
+        area.classList.add('uploaded');
+        area.querySelector('p').innerHTML = `<strong>${input.files[0].name}</strong>`;
+      }
+    });
+  }
+});
+
+// --- TOAST ---
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// --- Remove default Vite content ---
+document.getElementById('app')?.remove();
