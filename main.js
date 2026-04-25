@@ -226,9 +226,27 @@ document.getElementById('txnFilter')?.addEventListener('change', (e) => {
 // --- SEND BITCOINS ---
 document.getElementById('sendBtn')?.addEventListener('click', () => {
   const rec = document.getElementById('recipientInput').value;
-  const amt = document.getElementById('amountInput').value;
-  if (!rec || !amt) { showToast('Please fill in recipient and amount'); return; }
-  showToast(`${parseFloat(amt)} BTC sent to ${rec} ✓`);
+  const amt = parseFloat(document.getElementById('amountInput').value);
+  const note = document.getElementById('noteInput').value;
+  if (!rec || isNaN(amt) || amt <= 0) { showToast('Please fill in a valid recipient and amount'); return; }
+  if (amt > btcBalance) { showToast('Insufficient balance!'); return; }
+  
+  btcBalance -= amt;
+  updateBalanceDisplay();
+  
+  transactions.unshift({
+    type: 'sent',
+    icon: '↑',
+    name: rec,
+    desc: note || 'Sent via Bit Bank',
+    amount: -amt,
+    currency: 'BTC',
+    status: 'success',
+    time: 'Just now'
+  });
+  renderTransactions('all');
+  
+  showToast(`${amt} BTC sent to ${rec} ✓`);
   document.getElementById('recipientInput').value = '';
   document.getElementById('amountInput').value = '';
   document.getElementById('noteInput').value = '';
@@ -237,10 +255,28 @@ document.getElementById('sendBtn')?.addEventListener('click', () => {
 // --- DEPOSIT CRYPTO ---
 document.getElementById('depositBtn')?.addEventListener('click', () => {
   const currency = document.getElementById('depositCurrency').value;
-  const amt = document.getElementById('depositAmount').value;
+  const amt = parseFloat(document.getElementById('depositAmount').value);
   const address = document.getElementById('depositAddress').value;
-  if (!address || !amt) { showToast('Please fill in address and amount'); return; }
-  showToast(`${parseFloat(amt)} ${currency} deposit initiated ✓`);
+  if (!address || isNaN(amt) || amt <= 0) { showToast('Please fill in a valid address and amount'); return; }
+  
+  if (currency === 'BTC') {
+    btcBalance += amt;
+    updateBalanceDisplay();
+  }
+  
+  transactions.unshift({
+    type: 'received',
+    icon: '↓',
+    name: 'Deposit',
+    desc: `Deposited from ${address.substring(0, 8)}...`,
+    amount: amt,
+    currency: currency,
+    status: 'success',
+    time: 'Just now'
+  });
+  renderTransactions('all');
+  
+  showToast(`${amt} ${currency} deposit initiated ✓`);
   document.getElementById('depositAmount').value = '';
   document.getElementById('depositAddress').value = '';
 });
@@ -249,9 +285,28 @@ document.getElementById('depositBtn')?.addEventListener('click', () => {
 document.getElementById('withdrawBtn')?.addEventListener('click', () => {
   const currency = document.getElementById('withdrawCurrency').value;
   const address = document.getElementById('withdrawAddress').value;
-  const amt = document.getElementById('withdrawAmount').value;
-  if (!address || !amt) { showToast('Please fill in address and amount'); return; }
-  showToast(`${parseFloat(amt)} ${currency} withdrawal to ${address} initiated ✓`);
+  const amt = parseFloat(document.getElementById('withdrawAmount').value);
+  if (!address || isNaN(amt) || amt <= 0) { showToast('Please fill in a valid address and amount'); return; }
+  
+  if (currency === 'BTC') {
+    if (amt > btcBalance) { showToast('Insufficient BTC balance!'); return; }
+    btcBalance -= amt;
+    updateBalanceDisplay();
+  }
+  
+  transactions.unshift({
+    type: 'sent',
+    icon: '↑',
+    name: 'Withdrawal',
+    desc: `Withdrawn to ${address.substring(0, 8)}...`,
+    amount: -amt,
+    currency: currency,
+    status: 'success',
+    time: 'Just now'
+  });
+  renderTransactions('all');
+  
+  showToast(`${amt} ${currency} withdrawal to ${address} initiated ✓`);
   document.getElementById('withdrawAddress').value = '';
   document.getElementById('withdrawAmount').value = '';
 });
