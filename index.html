@@ -1,535 +1,574 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!-- test auto sync -->
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BIT BANK — Your Crypto. Your Legacy. Our Security.</title>
-  <meta name="description" content="BIT BANK is a next-generation crypto payment and digital inheritance platform. Secure your assets and legacy with premium banking." />
+  <meta name="description"
+    content="BIT BANK is a next-generation crypto payment and digital inheritance platform. Secure your assets and legacy with premium banking." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="pages.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
+
 <body>
   <!-- LOGIN GATE / 3D INTRO -->
   <div id="introScene" class="intro-scene">
     <canvas id="coinCanvas"></canvas>
   </div>
-  
+
   <div id="loginGate" class="login-gate hidden-initially">
     <div class="login-box glass-panel" id="loginBox">
       <div class="form-content">
         <div id="loginHeader">
-        <div class="logo-icon center-logo">₿</div>
-        <h2 id="formTitle">Create Account</h2>
-        <p id="formSubtitle">Join BIT BANK to secure your digital legacy.</p>
-      </div>
-      
-      <form id="loginForm">
-        <div id="registerFields">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" id="loginName" required placeholder="John Doe" />
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="loginEmail" required placeholder="john@example.com" />
-          </div>
-          <div class="form-group">
-            <label>Contact Number</label>
-            <input type="tel" id="loginContact" required placeholder="+1 234 567 8900" />
-          </div>
-          <div class="form-group">
-            <label>Aadhar / PAN No.</label>
-            <input type="text" id="loginId" required placeholder="Government ID" />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="loginPassword" required placeholder="••••••••" />
-          </div>
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" id="loginConfirmPassword" required placeholder="••••••••" />
-          </div>
-        </div>
-        
-        <div id="loginOnlyFields" style="display: none;">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="existingEmail" placeholder="john@example.com" />
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="existingPassword" placeholder="••••••••" />
-          </div>
+          <div class="logo-icon center-logo">₿</div>
+          <h2 id="formTitle">Create Account</h2>
+          <p id="formSubtitle">Join BIT BANK to secure your digital legacy.</p>
         </div>
 
-        <button type="submit" id="submitAuthBtn" class="btn-primary btn-full btn-gold-glow">Create Account</button>
-      </form>
-      
-      <div class="auth-switch">
-        <p>Already have an account? <span id="toggleAuthMode">Login here</span></p>
-      </div>
+        <form id="loginForm">
+          <div id="registerFields">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="loginName" required placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="loginEmail" required placeholder="john@example.com" />
+            </div>
+            <div class="form-group">
+              <label>Contact Number</label>
+              <input type="tel" id="loginContact" required placeholder="+1 234 567 8900" />
+            </div>
+            <div class="form-group">
+              <label>Aadhar / PAN No.</label>
+              <input type="text" id="loginId" required placeholder="Government ID" />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="loginPassword" required placeholder="••••••••" />
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" id="loginConfirmPassword" required placeholder="••••••••" />
+            </div>
+          </div>
+
+          <div id="loginOnlyFields" style="display: none;">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="existingEmail" placeholder="john@example.com" />
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="existingPassword" placeholder="••••••••" />
+            </div>
+          </div>
+
+          <button type="submit" id="submitAuthBtn" class="btn-primary btn-full btn-gold-glow">Create Account</button>
+        </form>
+
+        <div class="auth-switch">
+          <p>Already have an account? <span id="toggleAuthMode">Login here</span></p>
+        </div>
       </div> <!-- /form-content -->
     </div>
   </div>
 
   <div id="mainAppContainer" style="display: none;">
-  <!-- AMBIENT ORBS -->
-  <div class="ambient-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-  
-  <!-- NAVIGATION -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="#" class="logo" data-page="home">
-        <span class="logo-icon">₿</span> BIT BANK
-      </a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
-        <li><a href="#" class="nav-link" data-page="transaction">Transaction</a></li>
-        <li><a href="#" class="nav-link" data-page="inherite">Inherite</a></li>
-      </ul>
-      <div class="nav-actions">
-        <div class="profile-dropdown" id="profileDropdown">
-          <div class="profile-icon" id="profileIcon">👤</div>
-          <div class="profile-card" id="profileCard">
-            <div id="profileName" class="profile-detail">Name</div>
-            <div id="profileEmail" class="profile-detail">Email</div>
-            <div id="profileContact" class="profile-detail">Contact</div>
-          </div>
-        </div>
-      </div>
-      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <!-- AMBIENT ORBS -->
+    <div class="ambient-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
     </div>
-  </nav>
 
-  <!-- ============ HOME PAGE ============ -->
-  <main id="page-home" class="page active">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-container">
-        <div class="hero-left reveal">
-          <div class="hero-badge">🚀 Next-Gen Crypto Banking</div>
-          <h1>Your Crypto.<br/>Your Legacy.<br/>Our Security.</h1>
-          <p class="hero-sub">BIT BANK is the world's first crypto payment platform with built-in digital inheritance. Send, receive, and secure your digital assets — even beyond your lifetime.</p>
-          <div class="trust-row">
-            <div class="avatar-stack">
-              <div class="avatar" style="background:#D4AF37;">A</div>
-              <div class="avatar" style="background:#B8860B;">R</div>
-              <div class="avatar" style="background:#DAA520;">S</div>
-              <div class="avatar" style="background:#C5975B;">P</div>
-            </div>
-            <div class="trust-text">
-              <div class="stars">★★★★★</div>
-              <span>Trusted by <strong>50,000+</strong> users worldwide</span>
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="#" class="logo" data-page="home">
+          <span class="logo-icon">₿</span> BIT BANK
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+          <li><a href="#" class="nav-link" data-page="transaction">Transaction</a></li>
+          <li><a href="#" class="nav-link" data-page="inherite">Inherite</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-icon" id="profileIcon">👤</div>
+            <div class="profile-card" id="profileCard">
+              <div id="profileName" class="profile-detail">Name</div>
+              <div id="profileEmail" class="profile-detail">Email</div>
+              <div id="profileContact" class="profile-detail">Contact</div>
             </div>
           </div>
         </div>
-        <div class="hero-right reveal">
-          <div class="bitcoin-glow"></div>
-          <img src="images/bitcoin-hero.png" alt="3D Gold Bitcoin" class="hero-coin" />
-        </div>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
       </div>
-    </section>
+    </nav>
 
-    <!-- STATS -->
-    <section class="stats-section">
-      <div class="stats-container reveal">
-        <div class="stat-item">
-          <h2 class="stat-num" data-target="2.5">$0B+</h2>
-          <p>Transactions Processed</p>
-        </div>
-        <div class="stat-item">
-          <h2 class="stat-num" data-target="50000">0+</h2>
-          <p>Active Users</p>
-        </div>
-        <div class="stat-item">
-          <h2 class="stat-num" data-target="140">0+</h2>
-          <p>Countries Supported</p>
-        </div>
-        <div class="stat-item">
-          <h2 class="stat-num" data-target="99.9">0%</h2>
-          <p>Uptime & Security</p>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- TESTIMONIALS -->
-    <section class="testimonials-section">
-      <div class="section-header reveal">
-        <span class="section-tag">What People Say</span>
-        <h2>Loved by thousands worldwide</h2>
-      </div>
-      <div class="testimonials-grid">
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>"BIT BANK changed how I think about crypto. The Inherite feature gives me peace of mind knowing my family is protected."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar" style="background:#D4AF37;">RS</div>
-            <div><strong>Rahul Sharma</strong><br/><span>Software Engineer, Bangalore</span></div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>"The simplest crypto app I've ever used. Sending money feels as easy as texting. And the security is unmatched."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar" style="background:#B8860B;">PM</div>
-            <div><strong>Priya Mehta</strong><br/><span>Financial Analyst, Mumbai</span></div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>"As a portfolio manager, I recommend BIT BANK to all my clients. The inheritance planning feature is revolutionary."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar" style="background:#DAA520;">JC</div>
-            <div><strong>James Chen</strong><br/><span>Portfolio Manager, Singapore</span></div>
-          </div>
-        </div>
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>"Finally, a crypto platform that thinks about the future. Setting up my digital will took less than 5 minutes."</p>
-          <div class="testimonial-author">
-            <div class="author-avatar" style="background:#C5975B;">AK</div>
-            <div><strong>Ananya Kapoor</strong><br/><span>Entrepreneur, Delhi</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- BRANDS -->
-    <section class="brands-section reveal">
-      <p class="brands-label">As featured in</p>
-      <div class="brands-row">
-        <span class="brand-logo">CoinDesk</span>
-        <span class="brand-logo">Forbes</span>
-        <span class="brand-logo">Bloomberg</span>
-        <span class="brand-logo">TechCrunch</span>
-        <span class="brand-logo">Reuters</span>
-        <span class="brand-logo">CNBC</span>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="cta-section reveal">
-      <div class="cta-card">
-        <h2>Ready to secure your crypto legacy?</h2>
-        <p>Join 50,000+ users who trust BIT BANK with their digital future.</p>
-        <button class="btn-primary btn-lg">Create Free Account</button>
-      </div>
-    </section>
-  </main>
-
-  <!-- ============ TRANSACTION PAGE ============ -->
-  <main id="page-transaction" class="page">
-    <div class="dashboard-container">
-      <div class="dash-header reveal">
-        <h1>Transaction Dashboard</h1>
-        <p>Manage your payments, view history, and send bitcoins instantly</p>
-      </div>
-      <div class="dash-grid">
-        <!-- Balance Card -->
-        <div class="balance-card reveal">
-          <div class="balance-top">
-            <span class="balance-label">Total Balance</span>
-            <span class="balance-badge">● Live</span>
-          </div>
-          <h2 class="balance-amount">2.5 BTC</h2>
-          <p class="balance-change">+12.5% from last month</p>
-          <div class="balance-breakdown">
-            <div class="crypto-row"><span class="crypto-icon btc">₿</span><span>Bitcoin (BTC)</span><span class="crypto-val">2.5 BTC</span></div>
-            <div class="crypto-row"><span class="crypto-icon eth">Ξ</span><span>Ethereum (ETH)</span><span class="crypto-val">12.5 ETH</span></div>
-            <div class="crypto-row"><span class="crypto-icon sol" style="color: #14F195; font-weight: bold;">◎</span><span>Solana (SOL)</span><span class="crypto-val">150 SOL</span></div>
-          </div>
-        </div>
-
-        <!-- Send Money -->
-        <div class="send-card reveal">
-          <h3>💸 Send Bitcoins</h3>
-          <form id="sendForm" onsubmit="return false;">
-            <div class="form-group">
-              <label>Recipient</label>
-              <input type="text" placeholder="Name, phone, or email" id="recipientInput" />
-            </div>
-            <div class="form-group">
-              <label>Amount</label>
-              <input type="number" step="any" placeholder="Enter amount" id="amountInput" />
-            </div>
-            <div class="form-group">
-              <label>Note (optional)</label>
-              <input type="text" placeholder="What's this for?" id="noteInput" />
-            </div>
-            <button class="btn-primary btn-full" id="sendBtn" type="button">Send Bitcoins →</button>
-          </form>
-        </div>
-
-        <!-- Deposit Crypto -->
-        <div class="send-card reveal">
-          <h3>📥 Deposit Crypto</h3>
-          <form id="depositForm" onsubmit="return false;">
-            <div class="form-group">
-              <label>Currency</label>
-              <select id="depositCurrency">
-                <option value="BTC">Bitcoin (BTC)</option>
-                <option value="ETH">Ethereum (ETH)</option>
-                <option value="SOL">Solana (SOL)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Amount</label>
-              <input type="number" step="any" placeholder="Enter amount to deposit" id="depositAmount" />
-            </div>
-            <div class="form-group">
-              <label>Deposit Address</label>
-              <input type="text" placeholder="Enter deposit address" id="depositAddress" />
-            </div>
-            <button class="btn-primary btn-full" id="depositBtn" type="button">Deposit →</button>
-          </form>
-        </div>
-
-        <!-- Withdraw Crypto -->
-        <div class="send-card reveal">
-          <h3>📤 Withdraw Crypto</h3>
-          <form id="withdrawForm" onsubmit="return false;">
-            <div class="form-group">
-              <label>Currency</label>
-              <select id="withdrawCurrency">
-                <option value="BTC">Bitcoin (BTC)</option>
-                <option value="ETH">Ethereum (ETH)</option>
-                <option value="SOL">Solana (SOL)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Amount</label>
-              <input type="number" step="any" placeholder="Enter amount to withdraw" id="withdrawAmount" />
-            </div>
-            <div class="form-group">
-              <label>Withdrawal Address</label>
-              <input type="text" placeholder="Enter recipient wallet address" id="withdrawAddress" />
-            </div>
-            <button class="btn-primary btn-full" id="withdrawBtn" type="button">Withdraw →</button>
-          </form>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="quick-actions reveal">
-          <h3>Quick Actions</h3>
-          <div class="action-grid">
-            <button class="action-btn"><span>📤</span>Send</button>
-            <button class="action-btn"><span>📥</span>Receive</button>
-            <button class="action-btn"><span>🔄</span>Swap</button>
-            <button class="action-btn"><span>📊</span>Invest</button>
-          </div>
-        </div>
-
-        <!-- Transaction History -->
-        <div class="txn-history reveal">
-          <div class="txn-header">
-            <h3>Recent Transactions</h3>
-            <select class="txn-filter" id="txnFilter">
-              <option value="all">All</option>
-              <option value="sent">Sent</option>
-              <option value="received">Received</option>
-              <option value="failed">Failed</option>
-              <option value="swap">Swaps</option>
-            </select>
-          </div>
-          <div class="txn-list" id="txnList">
-            <!-- Filled by JS -->
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- ============ INHERITE PAGE ============ -->
-  <main id="page-inherite" class="page">
-    <div class="legacy-container">
-      <div class="legacy-header reveal">
-        <div class="legacy-badge">🔐 Secured by 256-bit Encryption</div>
-        <h1>Inherite</h1>
-        <p>Access digital assets of a deceased family member through our verified, secure inheritance process.</p>
-        <div class="legacy-trust">
-          <span>🛡️ Bank-Grade Security</span>
-          <span>✅ Government ID Verified</span>
-          <span>⚖️ Legally Compliant</span>
-        </div>
-      </div>
-
-      <div class="legacy-info-card reveal">
-        <div class="info-icon">ℹ️</div>
-        <div>
-          <strong>How does Inherite work?</strong>
-          <p>Access to digital assets is granted only after identity verification and inactivity validation. Our system cross-references government IDs, verifies relationships, and ensures the account holder has been inactive for the configured period before releasing any assets.</p>
-        </div>
-      </div>
-
-      <div class="steps-container">
-        <!-- Step 1 -->
-        <div class="step-card active reveal" id="step1">
-          <div class="step-badge">Step 1 of 4</div>
-          <div class="step-header">
-            <div class="step-num">1</div>
-            <div><h3>Your Identity Verification</h3><p>Verify yourself to begin the claim process</p></div>
-          </div>
-          <div class="step-body">
-            <div class="form-group">
-              <label>Your Full Name</label>
-              <input type="text" placeholder="Enter your full legal name" id="claimantName" />
-            </div>
-            <div class="form-group">
-              <label>Your Aadhaar Number</label>
-              <input type="text" placeholder="XXXX XXXX XXXX" maxlength="14" id="claimantAadhaar" />
-            </div>
-            <div class="form-group">
-              <label>Upload Aadhaar Document</label>
-              <div class="upload-area" id="uploadArea1">
-                <span>📄</span>
-                <p>Drag & drop or <strong>click to upload</strong></p>
-                <small>PDF, JPG, PNG — Max 5MB</small>
-                <input type="file" class="file-input" accept=".pdf,.jpg,.jpeg,.png" />
+    <!-- ============ HOME PAGE ============ -->
+    <main id="page-home" class="page active">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-container">
+          <div class="hero-left reveal">
+            <div class="hero-badge">🚀 Next-Gen Crypto Banking</div>
+            <h1>Your Crypto.<br />Your Legacy.<br />Our Security.</h1>
+            <p class="hero-sub">BIT BANK is the world's first crypto payment platform with built-in digital inheritance.
+              Send, receive, and secure your digital assets — even beyond your lifetime.</p>
+            <div class="trust-row">
+              <div class="avatar-stack">
+                <div class="avatar" style="background:#D4AF37;">A</div>
+                <div class="avatar" style="background:#B8860B;">R</div>
+                <div class="avatar" style="background:#DAA520;">S</div>
+                <div class="avatar" style="background:#C5975B;">P</div>
               </div>
-            </div>
-            <button class="btn-primary btn-full" onclick="nextStep(2)">Continue →</button>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="step-card reveal" id="step2">
-          <div class="step-badge">Step 2 of 4</div>
-          <div class="step-header">
-            <div class="step-num">2</div>
-            <div><h3>Deceased Person Verification</h3><p>Provide details of the account holder</p></div>
-          </div>
-          <div class="step-body">
-            <div class="form-group">
-              <label>Deceased Person's Full Name</label>
-              <input type="text" placeholder="Full legal name of the deceased" id="deceasedName" />
-            </div>
-            <div class="form-group">
-              <label>Deceased Person's Aadhaar Number</label>
-              <input type="text" placeholder="XXXX XXXX XXXX" maxlength="14" id="deceasedAadhaar" />
-            </div>
-            <div class="form-group">
-              <label>Your Relationship</label>
-              <select id="relationship">
-                <option value="">Select relationship</option>
-                <option>Spouse</option>
-                <option>Son / Daughter</option>
-                <option>Parent</option>
-                <option>Sibling</option>
-                <option>Legal Guardian</option>
-                <option>Other (Legal Nominee)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Upload Death Certificate</label>
-              <div class="upload-area" id="uploadArea2">
-                <span>📄</span>
-                <p>Drag & drop or <strong>click to upload</strong></p>
-                <small>PDF, JPG, PNG — Max 5MB</small>
-                <input type="file" class="file-input" accept=".pdf,.jpg,.jpeg,.png" />
-              </div>
-            </div>
-            <div class="step-buttons">
-              <button class="btn-secondary" onclick="nextStep(1)">← Back</button>
-              <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="step-card reveal" id="step3">
-          <div class="step-badge">Step 3 of 4</div>
-          <div class="step-header">
-            <div class="step-num">3</div>
-            <div><h3>Review & Submit Claim</h3><p>Verify your details before submitting</p></div>
-          </div>
-          <div class="step-body">
-            <div class="review-box" id="reviewBox">
-              <div class="review-row"><span>Your Name</span><strong id="revName">—</strong></div>
-              <div class="review-row"><span>Your Aadhaar</span><strong id="revAadhaar">—</strong></div>
-              <div class="review-row"><span>Deceased Name</span><strong id="revDeceased">—</strong></div>
-              <div class="review-row"><span>Relationship</span><strong id="revRelation">—</strong></div>
-              <div class="review-row"><span>Documents</span><strong>2 uploaded</strong></div>
-            </div>
-            <div class="consent-check">
-              <input type="checkbox" id="consent" />
-              <label for="consent">I confirm that all information provided is accurate and I am legally authorized to make this claim.</label>
-            </div>
-            <div class="step-buttons">
-              <button class="btn-secondary" onclick="nextStep(2)">← Back</button>
-              <button class="btn-primary btn-gold" onclick="submitClaim()" id="submitClaimBtn">🔐 Request Access</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="step-card reveal" id="step4">
-          <div class="step-badge">Step 4 of 4</div>
-          <div class="step-header">
-            <div class="step-num">4</div>
-            <div><h3>Claim Status</h3><p>Track the progress of your inheritance claim</p></div>
-          </div>
-          <div class="step-body">
-            <div class="status-card" id="statusCard">
-              <div class="status-icon pending">⏳</div>
-              <h3>Verification In Progress</h3>
-              <p>Your claim has been submitted successfully. Our team will verify your documents and identity within 3–5 business days.</p>
-              <div class="status-timeline">
-                <div class="tl-item done"><span class="tl-dot"></span><div><strong>Claim Submitted</strong><small>April 22, 2026 — 8:42 PM</small></div></div>
-                <div class="tl-item active"><span class="tl-dot"></span><div><strong>Identity Verification</strong><small>In progress...</small></div></div>
-                <div class="tl-item"><span class="tl-dot"></span><div><strong>Document Review</strong><small>Pending</small></div></div>
-                <div class="tl-item"><span class="tl-dot"></span><div><strong>Asset Transfer</strong><small>Pending approval</small></div></div>
+              <div class="trust-text">
+                <div class="stars">★★★★★</div>
+                <span>Trusted by <strong>50,000+</strong> users worldwide</span>
               </div>
             </div>
           </div>
+          <div class="hero-right reveal">
+            <div class="bitcoin-glow"></div>
+            <img src="images/bitcoin-hero.png" alt="3D Gold Bitcoin" class="hero-coin" />
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="stats-section">
+        <div class="stats-container reveal">
+          <div class="stat-item">
+            <h2 class="stat-num" data-target="2.5">$0B+</h2>
+            <p>Transactions Processed</p>
+          </div>
+          <div class="stat-item">
+            <h2 class="stat-num" data-target="50000">0+</h2>
+            <p>Active Users</p>
+          </div>
+          <div class="stat-item">
+            <h2 class="stat-num" data-target="140">0+</h2>
+            <p>Countries Supported</p>
+          </div>
+          <div class="stat-item">
+            <h2 class="stat-num" data-target="99.9">0%</h2>
+            <p>Uptime & Security</p>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- TESTIMONIALS -->
+      <section class="testimonials-section">
+        <div class="section-header reveal">
+          <span class="section-tag">What People Say</span>
+          <h2>Loved by thousands worldwide</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p>"BIT BANK changed how I think about crypto. The Inherite feature gives me peace of mind knowing my family
+              is protected."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#D4AF37;">RS</div>
+              <div><strong>Rahul Sharma</strong><br /><span>Software Engineer, Bangalore</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p>"The simplest crypto app I've ever used. Sending money feels as easy as texting. And the security is
+              unmatched."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#B8860B;">PM</div>
+              <div><strong>Priya Mehta</strong><br /><span>Financial Analyst, Mumbai</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p>"As a portfolio manager, I recommend BIT BANK to all my clients. The inheritance planning feature is
+              revolutionary."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#DAA520;">JC</div>
+              <div><strong>James Chen</strong><br /><span>Portfolio Manager, Singapore</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card reveal">
+            <div class="stars">★★★★★</div>
+            <p>"Finally, a crypto platform that thinks about the future. Setting up my digital will took less than 5
+              minutes."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar" style="background:#C5975B;">AK</div>
+              <div><strong>Ananya Kapoor</strong><br /><span>Entrepreneur, Delhi</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BRANDS -->
+      <section class="brands-section reveal">
+        <p class="brands-label">As featured in</p>
+        <div class="brands-row">
+          <span class="brand-logo">CoinDesk</span>
+          <span class="brand-logo">Forbes</span>
+          <span class="brand-logo">Bloomberg</span>
+          <span class="brand-logo">TechCrunch</span>
+          <span class="brand-logo">Reuters</span>
+          <span class="brand-logo">CNBC</span>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta-section reveal">
+        <div class="cta-card">
+          <h2>Ready to secure your crypto legacy?</h2>
+          <p>Join 50,000+ users who trust BIT BANK with their digital future.</p>
+          <button class="btn-primary btn-lg">Create Free Account</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============ TRANSACTION PAGE ============ -->
+    <main id="page-transaction" class="page">
+      <div class="dashboard-container">
+        <div class="dash-header reveal">
+          <h1>Transaction Dashboard</h1>
+          <p>Manage your payments, view history, and send bitcoins instantly</p>
+        </div>
+        <div class="dash-grid">
+          <!-- Balance Card -->
+          <div class="balance-card reveal">
+            <div class="balance-top">
+              <span class="balance-label">Total Balance</span>
+              <span class="balance-badge">● Live</span>
+            </div>
+            <h2 class="balance-amount">2.5 BTC</h2>
+            <p class="balance-change">+12.5% from last month</p>
+            <div class="balance-breakdown">
+              <div class="crypto-row"><span class="crypto-icon btc">₿</span><span>Bitcoin (BTC)</span><span
+                  class="crypto-val">2.5 BTC</span></div>
+              <div class="crypto-row"><span class="crypto-icon eth">Ξ</span><span>Ethereum (ETH)</span><span
+                  class="crypto-val">12.5 ETH</span></div>
+              <div class="crypto-row"><span class="crypto-icon sol"
+                  style="color: #14F195; font-weight: bold;">◎</span><span>Solana (SOL)</span><span
+                  class="crypto-val">150 SOL</span></div>
+            </div>
+          </div>
+
+          <!-- Send Money -->
+          <div class="send-card reveal">
+            <h3>💸 Send Bitcoins</h3>
+            <form id="sendForm" onsubmit="return false;">
+              <div class="form-group">
+                <label>Recipient</label>
+                <input type="text" placeholder="Name, phone, or email" id="recipientInput" />
+              </div>
+              <div class="form-group">
+                <label>Amount</label>
+                <input type="number" step="any" placeholder="Enter amount" id="amountInput" />
+              </div>
+              <div class="form-group">
+                <label>Note (optional)</label>
+                <input type="text" placeholder="What's this for?" id="noteInput" />
+              </div>
+              <button class="btn-primary btn-full" id="sendBtn" type="button">Send Bitcoins →</button>
+            </form>
+          </div>
+
+          <!-- Deposit Crypto -->
+          <div class="send-card reveal">
+            <h3>📥 Deposit Crypto</h3>
+            <form id="depositForm" onsubmit="return false;">
+              <div class="form-group">
+                <label>Currency</label>
+                <select id="depositCurrency">
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
+                  <option value="SOL">Solana (SOL)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Amount</label>
+                <input type="number" step="any" placeholder="Enter amount to deposit" id="depositAmount" />
+              </div>
+              <div class="form-group">
+                <label>Deposit Address</label>
+                <input type="text" placeholder="Enter deposit address" id="depositAddress" />
+              </div>
+              <button class="btn-primary btn-full" id="depositBtn" type="button">Deposit →</button>
+            </form>
+          </div>
+
+          <!-- Withdraw Crypto -->
+          <div class="send-card reveal">
+            <h3>📤 Withdraw Crypto</h3>
+            <form id="withdrawForm" onsubmit="return false;">
+              <div class="form-group">
+                <label>Currency</label>
+                <select id="withdrawCurrency">
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
+                  <option value="SOL">Solana (SOL)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Amount</label>
+                <input type="number" step="any" placeholder="Enter amount to withdraw" id="withdrawAmount" />
+              </div>
+              <div class="form-group">
+                <label>Withdrawal Address</label>
+                <input type="text" placeholder="Enter recipient wallet address" id="withdrawAddress" />
+              </div>
+              <button class="btn-primary btn-full" id="withdrawBtn" type="button">Withdraw →</button>
+            </form>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="quick-actions reveal">
+            <h3>Quick Actions</h3>
+            <div class="action-grid">
+              <button class="action-btn"><span>📤</span>Send</button>
+              <button class="action-btn"><span>📥</span>Receive</button>
+              <button class="action-btn"><span>🔄</span>Swap</button>
+              <button class="action-btn"><span>📊</span>Invest</button>
+            </div>
+          </div>
+
+          <!-- Transaction History -->
+          <div class="txn-history reveal">
+            <div class="txn-header">
+              <h3>Recent Transactions</h3>
+              <select class="txn-filter" id="txnFilter">
+                <option value="all">All</option>
+                <option value="sent">Sent</option>
+                <option value="received">Received</option>
+                <option value="failed">Failed</option>
+                <option value="swap">Swaps</option>
+              </select>
+            </div>
+            <div class="txn-list" id="txnList">
+              <!-- Filled by JS -->
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <h3><span class="logo-icon">₿</span> BIT BANK</h3>
-          <p>The future of crypto banking and digital inheritance. Secure, simple, and built for everyone.</p>
+    <!-- ============ INHERITE PAGE ============ -->
+    <main id="page-inherite" class="page">
+      <div class="legacy-container">
+        <div class="legacy-header reveal">
+          <div class="legacy-badge">🔐 Secured by 256-bit Encryption</div>
+          <h1>Inherite</h1>
+          <p>Access digital assets of a deceased family member through our verified, secure inheritance process.</p>
+          <div class="legacy-trust">
+            <span>🛡️ Bank-Grade Security</span>
+            <span>✅ Government ID Verified</span>
+            <span>⚖️ Legally Compliant</span>
+          </div>
         </div>
-        <div class="footer-col">
-          <h4>Product</h4>
-          <a href="#">Payments</a><a href="#">Wallet</a><a href="#">Inherite</a><a href="#">Security</a>
+
+        <div class="legacy-info-card reveal">
+          <div class="info-icon">ℹ️</div>
+          <div>
+            <strong>How does Inherite work?</strong>
+            <p>Access to digital assets is granted only after identity verification and inactivity validation. Our
+              system cross-references government IDs, verifies relationships, and ensures the account holder has been
+              inactive for the configured period before releasing any assets.</p>
+          </div>
         </div>
-        <div class="footer-col">
-          <h4>Company</h4>
-          <a href="#">Careers</a><a href="#">Press</a><a href="#">Blog</a>
-        </div>
-        <div class="footer-col">
-          <h4>Support</h4>
-          <a href="#">Help Center</a><a href="#">Contact</a><a href="#">Status</a><a href="#">API Docs</a>
+
+        <div class="steps-container">
+          <!-- Step 1 -->
+          <div class="step-card active reveal" id="step1">
+            <div class="step-badge">Step 1 of 4</div>
+            <div class="step-header">
+              <div class="step-num">1</div>
+              <div>
+                <h3>Your Identity Verification</h3>
+                <p>Verify yourself to begin the claim process</p>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="form-group">
+                <label>Your Full Name</label>
+                <input type="text" placeholder="Enter your full legal name" id="claimantName" />
+              </div>
+              <div class="form-group">
+                <label>Your Aadhaar Number</label>
+                <input type="text" placeholder="XXXX XXXX XXXX" maxlength="14" id="claimantAadhaar" />
+              </div>
+              <div class="form-group">
+                <label>Upload Aadhaar Document</label>
+                <div class="upload-area" id="uploadArea1">
+                  <span>📄</span>
+                  <p>Drag & drop or <strong>click to upload</strong></p>
+                  <small>PDF, JPG, PNG — Max 5MB</small>
+                  <input type="file" class="file-input" accept=".pdf,.jpg,.jpeg,.png" />
+                </div>
+              </div>
+              <button class="btn-primary btn-full" onclick="nextStep(2)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card reveal" id="step2">
+            <div class="step-badge">Step 2 of 4</div>
+            <div class="step-header">
+              <div class="step-num">2</div>
+              <div>
+                <h3>Deceased Person Verification</h3>
+                <p>Provide details of the account holder</p>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="form-group">
+                <label>Deceased Person's Full Name</label>
+                <input type="text" placeholder="Full legal name of the deceased" id="deceasedName" />
+              </div>
+              <div class="form-group">
+                <label>Deceased Person's Aadhaar Number</label>
+                <input type="text" placeholder="XXXX XXXX XXXX" maxlength="14" id="deceasedAadhaar" />
+              </div>
+              <div class="form-group">
+                <label>Your Relationship</label>
+                <select id="relationship">
+                  <option value="">Select relationship</option>
+                  <option>Spouse</option>
+                  <option>Son / Daughter</option>
+                  <option>Parent</option>
+                  <option>Sibling</option>
+                  <option>Legal Guardian</option>
+                  <option>Other (Legal Nominee)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Upload Death Certificate</label>
+                <div class="upload-area" id="uploadArea2">
+                  <span>📄</span>
+                  <p>Drag & drop or <strong>click to upload</strong></p>
+                  <small>PDF, JPG, PNG — Max 5MB</small>
+                  <input type="file" class="file-input" accept=".pdf,.jpg,.jpeg,.png" />
+                </div>
+              </div>
+              <div class="step-buttons">
+                <button class="btn-secondary" onclick="nextStep(1)">← Back</button>
+                <button class="btn-primary" onclick="nextStep(3)">Continue →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card reveal" id="step3">
+            <div class="step-badge">Step 3 of 4</div>
+            <div class="step-header">
+              <div class="step-num">3</div>
+              <div>
+                <h3>Review & Submit Claim</h3>
+                <p>Verify your details before submitting</p>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="review-box" id="reviewBox">
+                <div class="review-row"><span>Your Name</span><strong id="revName">—</strong></div>
+                <div class="review-row"><span>Your Aadhaar</span><strong id="revAadhaar">—</strong></div>
+                <div class="review-row"><span>Deceased Name</span><strong id="revDeceased">—</strong></div>
+                <div class="review-row"><span>Relationship</span><strong id="revRelation">—</strong></div>
+                <div class="review-row"><span>Documents</span><strong>2 uploaded</strong></div>
+              </div>
+              <div class="consent-check">
+                <input type="checkbox" id="consent" />
+                <label for="consent">I confirm that all information provided is accurate and I am legally authorized to
+                  make this claim.</label>
+              </div>
+              <div class="step-buttons">
+                <button class="btn-secondary" onclick="nextStep(2)">← Back</button>
+                <button class="btn-primary btn-gold" onclick="submitClaim()" id="submitClaimBtn">🔐 Request
+                  Access</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card reveal" id="step4">
+            <div class="step-badge">Step 4 of 4</div>
+            <div class="step-header">
+              <div class="step-num">4</div>
+              <div>
+                <h3>Claim Status</h3>
+                <p>Track the progress of your inheritance claim</p>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="status-card" id="statusCard">
+                <div class="status-icon pending">⏳</div>
+                <h3>Verification In Progress</h3>
+                <p>Your claim has been submitted successfully. Our team will verify your documents and identity within
+                  3–5 business days.</p>
+                <div class="status-timeline">
+                  <div class="tl-item done"><span class="tl-dot"></span>
+                    <div><strong>Claim Submitted</strong><small>April 22, 2026 — 8:42 PM</small></div>
+                  </div>
+                  <div class="tl-item active"><span class="tl-dot"></span>
+                    <div><strong>Identity Verification</strong><small>In progress...</small></div>
+                  </div>
+                  <div class="tl-item"><span class="tl-dot"></span>
+                    <div><strong>Document Review</strong><small>Pending</small></div>
+                  </div>
+                  <div class="tl-item"><span class="tl-dot"></span>
+                    <div><strong>Asset Transfer</strong><small>Pending approval</small></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>© 2026 BIT BANK. All rights reserved.</p>
-        <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <h3><span class="logo-icon">₿</span> BIT BANK</h3>
+            <p>The future of crypto banking and digital inheritance. Secure, simple, and built for everyone.</p>
+          </div>
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a href="#">Payments</a><a href="#">Wallet</a><a href="#">Inherite</a><a href="#">Security</a>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <a href="#">Careers</a><a href="#">Press</a><a href="#">Blog</a>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">Help Center</a><a href="#">Contact</a><a href="#">Status</a><a href="#">API Docs</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 BIT BANK. All rights reserved.</p>
+          <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
-  <script src="login3d.js"></script>
-  <script src="main.js"></script>
+    <script src="login3d.js"></script>
+    <script src="main.js"></script>
   </div> <!-- End mainAppContainer -->
 </body>
+
 </html>
