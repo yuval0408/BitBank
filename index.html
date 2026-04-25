@@ -369,7 +369,7 @@
         <div class="legacy-header reveal">
           <div class="legacy-badge">🔐 Secured by 256-bit Encryption</div>
           <h1>Inherite</h1>
-          <p>Access digital assets of a deceased family member through our verified, secure inheritance process.</p>
+          <p>Inherit Bitcoin from any relation — spouse, parent, sibling, or anyone. Claim your rightful digital assets securely.</p>
           <div class="legacy-trust">
             <span>🛡️ Bank-Grade Security</span>
             <span>✅ Government ID Verified</span>
@@ -377,13 +377,20 @@
           </div>
         </div>
 
+        <!-- Inheritance Amount Display -->
+        <div class="legacy-info-card reveal" style="text-align:center;">
+          <div style="width:100%;">
+            <p style="font-size:0.9rem;color:#666;margin-bottom:8px;">Default Inheritance Amount</p>
+            <h2 style="font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,#D4AF37,#B8860B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;">₿ 500 BTC</h2>
+            <p style="font-size:0.85rem;color:#999;">This is the standard inheritance allocation per verified claim</p>
+          </div>
+        </div>
+
         <div class="legacy-info-card reveal">
           <div class="info-icon">ℹ️</div>
           <div>
             <strong>How does Inherite work?</strong>
-            <p>Access to digital assets is granted only after identity verification and inactivity validation. Our
-              system cross-references government IDs, verifies relationships, and ensures the account holder has been
-              inactive for the configured period before releasing any assets.</p>
+            <p>Submit your identity and the details of the person whose Bitcoin you wish to inherit. Our system verifies government IDs, validates the relationship, and processes the transfer of <strong>500 BTC</strong> to your account upon approval.</p>
           </div>
         </div>
 
@@ -447,9 +454,20 @@
                   <option>Son / Daughter</option>
                   <option>Parent</option>
                   <option>Sibling</option>
+                  <option>Grandparent</option>
+                  <option>Grandchild</option>
+                  <option>Uncle / Aunt</option>
+                  <option>Nephew / Niece</option>
+                  <option>Cousin</option>
+                  <option>Friend</option>
+                  <option>Business Partner</option>
                   <option>Legal Guardian</option>
                   <option>Other (Legal Nominee)</option>
                 </select>
+              </div>
+              <div class="form-group">
+                <label>Inheritance Amount (BTC)</label>
+                <input type="number" step="any" value="500" id="inheritAmount" placeholder="500" />
               </div>
               <div class="form-group">
                 <label>Upload Death Certificate</label>
@@ -481,8 +499,9 @@
               <div class="review-box" id="reviewBox">
                 <div class="review-row"><span>Your Name</span><strong id="revName">—</strong></div>
                 <div class="review-row"><span>Your Aadhaar</span><strong id="revAadhaar">—</strong></div>
-                <div class="review-row"><span>Deceased Name</span><strong id="revDeceased">—</strong></div>
+                <div class="review-row"><span>Person's Name</span><strong id="revDeceased">—</strong></div>
                 <div class="review-row"><span>Relationship</span><strong id="revRelation">—</strong></div>
+                <div class="review-row" style="background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(184,134,11,0.1));border-radius:12px;padding:12px 16px;"><span>Inheritance Amount</span><strong id="revAmount" style="color:#D4AF37;font-size:1.1rem;">₿ 500 BTC</strong></div>
                 <div class="review-row"><span>Documents</span><strong>2 uploaded</strong></div>
               </div>
               <div class="consent-check">
@@ -512,20 +531,19 @@
               <div class="status-card" id="statusCard">
                 <div class="status-icon pending">⏳</div>
                 <h3>Verification In Progress</h3>
-                <p>Your claim has been submitted successfully. Our team will verify your documents and identity within
-                  3–5 business days.</p>
+                <p>Your inheritance claim for <strong id="statusAmount">500 BTC</strong> has been submitted successfully. Our team will verify your documents and identity within 3–5 business days.</p>
                 <div class="status-timeline">
                   <div class="tl-item done"><span class="tl-dot"></span>
                     <div><strong>Claim Submitted</strong><small>April 22, 2026 — 8:42 PM</small></div>
                   </div>
                   <div class="tl-item active"><span class="tl-dot"></span>
-                    <div><strong>Identity Verification</strong><small>In progress...</small></div>
+                    <div><strong>Identity & Relationship Verification</strong><small>In progress...</small></div>
                   </div>
                   <div class="tl-item"><span class="tl-dot"></span>
                     <div><strong>Document Review</strong><small>Pending</small></div>
                   </div>
                   <div class="tl-item"><span class="tl-dot"></span>
-                    <div><strong>Asset Transfer</strong><small>Pending approval</small></div>
+                    <div><strong>₿ BTC Transfer</strong><small>Pending approval</small></div>
                   </div>
                 </div>
               </div>
