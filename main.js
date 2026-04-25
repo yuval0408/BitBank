@@ -279,8 +279,7 @@ window.nextStep = function(n) {
     document.getElementById('revAadhaar').textContent = document.getElementById('claimantAadhaar')?.value || '—';
     document.getElementById('revDeceased').textContent = document.getElementById('deceasedName')?.value || '—';
     document.getElementById('revRelation').textContent = document.getElementById('relationship')?.value || '—';
-    const amount = document.getElementById('inheritAmount')?.value || '500';
-    document.getElementById('revAmount').textContent = '₿ ' + amount + ' BTC';
+    document.getElementById('revAmount').textContent = '₿ 500 BTC';
   }
 };
 
@@ -288,7 +287,7 @@ window.submitClaim = function() {
   const consent = document.getElementById('consent');
   if (!consent.checked) { showToast('Please agree to the declaration'); return; }
   
-  const amount = parseFloat(document.getElementById('inheritAmount')?.value) || 500;
+  const amount = 500;
   const statusAmount = document.getElementById('statusAmount');
   if (statusAmount) statusAmount.textContent = amount + ' BTC';
   
