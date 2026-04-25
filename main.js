@@ -279,7 +279,7 @@ window.nextStep = function(n) {
     document.getElementById('revAadhaar').textContent = document.getElementById('claimantAadhaar')?.value || '—';
     document.getElementById('revDeceased').textContent = document.getElementById('deceasedName')?.value || '—';
     document.getElementById('revRelation').textContent = document.getElementById('relationship')?.value || '—';
-    document.getElementById('revAmount').textContent = '₿ 500 BTC';
+
   }
 };
 
