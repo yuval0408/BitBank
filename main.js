@@ -483,15 +483,18 @@ document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
   inputEl.value = '';
   historyEl.scrollTop = historyEl.scrollHeight;
   
+  const aiLoading = document.getElementById('aiLoading');
+  if (aiLoading) aiLoading.style.display = 'block';
+  
   const loadingDiv = document.createElement('div');
   loadingDiv.className = 'chat-message ai';
-  loadingDiv.textContent = 'Thinking...';
+  loadingDiv.textContent = '...';
   historyEl.appendChild(loadingDiv);
   historyEl.scrollTop = historyEl.scrollHeight;
   
   try {
-    // Calling the 2026 model: gemini-3.1-flash-lite-preview
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" }, { apiVersion: 'v1beta' });
+    // Calling the stable 2026 model: gemini-2.5-flash
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }, { apiVersion: 'v1' });
     const systemInstruction = "You are a Crypto Inheritance Guide for BitBank. You help users understand how to set up their digital inheritance, explain the verification process, and provide guidance on securing their crypto assets for their beneficiaries. Be concise and helpful.";
     
     const fullPrompt = `${systemInstruction}\n\nUser: ${msg}`;
@@ -508,6 +511,8 @@ document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
     } else {
       loadingDiv.textContent = 'AI Error: ' + (err.message || 'Check console for details.');
     }
+  } finally {
+    if (aiLoading) aiLoading.style.display = 'none';
   }
   historyEl.scrollTop = historyEl.scrollHeight;
 });
