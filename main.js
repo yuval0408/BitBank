@@ -448,6 +448,21 @@ function showToast(msg) {
 }
 
 // --- LEGACY ASSISTANT ---
+const assistantUI = document.getElementById('LegacyAssistant');
+const assistantToggle = document.getElementById('assistantToggle');
+const closeAssistant = document.getElementById('closeAssistant');
+
+assistantToggle?.addEventListener('click', () => {
+  assistantUI?.classList.toggle('open');
+  if (assistantUI?.classList.contains('open')) {
+    document.getElementById('chatInput')?.focus();
+  }
+});
+
+closeAssistant?.addEventListener('click', () => {
+  assistantUI?.classList.remove('open');
+});
+
 document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
   const inputEl = document.getElementById('chatInput');
   const msg = inputEl.value.trim();

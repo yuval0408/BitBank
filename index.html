@@ -100,7 +100,6 @@
           <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
           <li><a href="#" class="nav-link" data-page="transaction">Transaction</a></li>
           <li><a href="#" class="nav-link" data-page="inherite">Inherite</a></li>
-          <li><a href="#" class="nav-link" data-page="assistant">Assistant</a></li>
         </ul>
         <div class="nav-actions">
           <div class="profile-dropdown" id="profileDropdown">
@@ -545,25 +544,27 @@
       </div>
     </main>
 
-    <!-- ============ ASSISTANT PAGE ============ -->
-    <main id="page-assistant" class="page">
-      <div class="legacy-container">
-        <div class="legacy-header reveal">
-          <h1>Legacy Setup Assistant</h1>
-          <p>Your AI guide to securing your digital inheritance.</p>
+    <!-- ============ FLOATING ASSISTANT WIDGET ============ -->
+    <div class="assistant-widget" id="assistantWidget">
+      <div class="assistant-ui" id="LegacyAssistant">
+        <div class="assistant-header">
+          <h3>✨ BIT BANK Assistant</h3>
+          <button class="close-assistant" id="closeAssistant">×</button>
         </div>
-        <div class="assistant-ui reveal" id="LegacyAssistant">
-          <div class="chat-history" id="chatHistory">
-            <div class="chat-message ai">Hello! I am your BitBank Crypto Inheritance Guide. How can I help you set up
-              your digital legacy today?</div>
-          </div>
-          <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Ask a question..." />
-            <button class="btn-primary" id="sendChatBtn">Send</button>
-          </div>
+        <div class="chat-history" id="chatHistory">
+          <div class="chat-message ai">Hello! I am your BitBank Crypto Inheritance Guide. How can I help you set up
+            your digital legacy today?</div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="chatInput" placeholder="Ask a question..." />
+          <button class="btn-primary" id="sendChatBtn">Send</button>
         </div>
       </div>
-    </main>
+      <button class="assistant-toggle-btn" id="assistantToggle">
+        <span class="icon">💬</span>
+        <span class="text">Ask AI</span>
+      </button>
+    </div>
 
     <!-- FOOTER -->
     <footer class="footer">
