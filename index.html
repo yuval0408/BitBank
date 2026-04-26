@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="./pages.css" />
+  <link rel="stylesheet" href="./src/style.css" />
+  <link rel="stylesheet" href="./src/pages.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <div id="mainAppContainer" class="hidden-initially">
+  <div id="mainAppContainer">
     <!-- AMBIENT ORBS -->
     <div class="ambient-orbs">
       <div class="orb orb-1"></div>
@@ -588,9 +588,6 @@
           <div class="chat-message ai">Hello! I am your BitBank Crypto Inheritance Guide. How can I help you set up
             your digital legacy today?</div>
         </div>
-        <div id="aiLoading" style="display:none; padding: 8px 16px; font-size: 0.85rem; color: #888; font-style: italic;">
-          Assistant is thinking...
-        </div>
         <div class="chat-input-area">
           <input type="text" id="chatInput" placeholder="Ask a question..." />
           <button class="btn-primary" id="sendChatBtn">Send</button>
@@ -604,8 +601,8 @@
   </div> <!-- End mainAppContainer -->
 
 
-  <script src="./login3d.js"></script>
-  <script type="module" src="./main.js"></script>
+  <script src="./src/login3d.js"></script>
+  <script type="module" src="./src/main.js"></script>
 </body>
 
 </html>
