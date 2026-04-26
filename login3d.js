@@ -48,7 +48,7 @@ function init3DScene() {
 
   // Materials & Geometry for Coins
   const textureLoader = new THREE.TextureLoader();
-  const coinTexture = textureLoader.load('images/bitcoin_texture.png');
+  const coinTexture = textureLoader.load('./images/bitcoin_texture.png');
   coinTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
   
   const radius = 3;
