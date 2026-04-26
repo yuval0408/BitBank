@@ -490,8 +490,8 @@ document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
   historyEl.scrollTop = historyEl.scrollHeight;
   
   try {
-    // Calling the 2026 stable workhorse: gemini-2.5-flash
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }, { apiVersion: 'v1' });
+    // Calling the 2026 model: gemini-3.1-flash-lite-preview
+    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" }, { apiVersion: 'v1beta' });
     const systemInstruction = "You are a Crypto Inheritance Guide for BitBank. You help users understand how to set up their digital inheritance, explain the verification process, and provide guidance on securing their crypto assets for their beneficiaries. Be concise and helpful.";
     
     const fullPrompt = `${systemInstruction}\n\nUser: ${msg}`;
