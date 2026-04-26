@@ -25,18 +25,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare static files
-        run: |
-          mkdir -p _site
-          cp index.html _site/
-          cp style.css _site/
-          cp pages.css _site/
-          cp main.js _site/
-          cp login3d.js _site/
-          cp favicon.svg _site/
-          cp favicon.ico _site/
-          cp icons.svg _site/
-          cp -r images _site/images
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -44,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
       - name: Deploy to Pages
         id: deployment
