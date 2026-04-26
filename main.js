@@ -1,3 +1,9 @@
+import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
+
+const GEMINI_API_KEY = 'AIzaSyDS3Z5_qDVoKunw1Q1TUvf0A-3iKMaPuwI';
+// Initialize for 2026 stable API (v1)
+const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+
 // ===== BIT BANK — Main JS =====
 
 // --- LOGIN GATE & AUTH TOGGLE ---
@@ -484,15 +490,24 @@ document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
   historyEl.scrollTop = historyEl.scrollHeight;
   
   try {
-    const res = await fetch('http://localhost:3001/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: msg })
-    });
-    const data = await res.json();
-    loadingDiv.textContent = data.text || 'Error generating response.';
+    // Calling the 2026 stable workhorse: gemini-2.5-flash
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }, { apiVersion: 'v1' });
+    const systemInstruction = "You are a Crypto Inheritance Guide for BitBank. You help users understand how to set up their digital inheritance, explain the verification process, and provide guidance on securing their crypto assets for their beneficiaries. Be concise and helpful.";
+    
+    const fullPrompt = `${systemInstruction}\n\nUser: ${msg}`;
+    
+    const result = await model.generateContent(fullPrompt);
+    const response = await result.response;
+    const text = response.text();
+    
+    loadingDiv.textContent = text;
   } catch (err) {
-    loadingDiv.textContent = 'Connection error. Make sure the API server is running on port 3001.';
+    console.error('Gemini API Error:', err);
+    if (err.message?.includes('429')) {
+      loadingDiv.textContent = 'BitBank AI is currently syncing with the blockchain. Please try again in a moment.';
+    } else {
+      loadingDiv.textContent = 'AI Error: ' + (err.message || 'Check console for details.');
+    }
   }
   historyEl.scrollTop = historyEl.scrollHeight;
 });

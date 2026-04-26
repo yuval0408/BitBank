@@ -233,7 +233,7 @@ function init3DScene() {
     }
 
     // Send canvas to background
-    canvas.style.zIndex = '0'; // Behind login gate
+    canvas.style.zIndex = '1'; // Behind login gate but above body background
 
     // 4. Fade out the intro scene and show the login UI
     const introScene = document.getElementById('introScene');

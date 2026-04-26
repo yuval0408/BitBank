@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <div id="mainAppContainer" style="display: block !important; opacity: 1 !important; visibility: visible !important;">
+  <div id="mainAppContainer">
     <!-- AMBIENT ORBS -->
     <div class="ambient-orbs">
       <div class="orb orb-1"></div>
@@ -577,32 +577,32 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
+    <!-- ============ FLOATING ASSISTANT WIDGET ============ -->
+    <div class="assistant-widget" id="assistantWidget">
+      <div class="assistant-ui" id="LegacyAssistant">
+        <div class="assistant-header">
+          <h3>✨ BIT BANK Assistant</h3>
+          <button class="close-assistant" id="closeAssistant">×</button>
+        </div>
+        <div class="chat-history" id="chatHistory">
+          <div class="chat-message ai">Hello! I am your BitBank Crypto Inheritance Guide. How can I help you set up
+            your digital legacy today?</div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="chatInput" placeholder="Ask a question..." />
+          <button class="btn-primary" id="sendChatBtn">Send</button>
+        </div>
+      </div>
+      <button class="assistant-toggle-btn" id="assistantToggle">
+        <span class="icon">💬</span>
+        <span class="text">Ask AI</span>
+      </button>
+    </div>
   </div> <!-- End mainAppContainer -->
 
-  <!-- ============ FLOATING ASSISTANT WIDGET ============ -->
-  <div class="assistant-widget" id="assistantWidget">
-    <div class="assistant-ui" id="LegacyAssistant">
-      <div class="assistant-header">
-        <h3>✨ BIT BANK Assistant</h3>
-        <button class="close-assistant" id="closeAssistant">×</button>
-      </div>
-      <div class="chat-history" id="chatHistory">
-        <div class="chat-message ai">Hello! I am your BitBank Crypto Inheritance Guide. How can I help you set up
-          your digital legacy today?</div>
-      </div>
-      <div class="chat-input-area">
-        <input type="text" id="chatInput" placeholder="Ask a question..." />
-        <button class="btn-primary" id="sendChatBtn">Send</button>
-      </div>
-    </div>
-    <button class="assistant-toggle-btn" id="assistantToggle">
-      <span class="icon">💬</span>
-      <span class="text">Ask AI</span>
-    </button>
-  </div>
 
   <script src="login3d.js"></script>
-  <script src="main.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 
 </html>
