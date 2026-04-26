@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const GEMINI_API_KEY = 'AIzaSyDS3Z5_qDVoKunw1Q1TUvf0A-3iKMaPuwI';
 // Initialize for 2026 stable API (v1)
