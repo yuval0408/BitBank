@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from 'https://esm.run/@google/generative-ai';
 
-const GEMINI_API_KEY = 'AIzaSyDS3Z5_qDVoKunw1Q1TUvf0A-3iKMaPuwI';
-// Initialize for 2026 compliance (v1beta for latest models)
+const GEMINI_API_KEY = 'AIzaSyD45L139eXpk9nMeVZJWkCx1TWmQRCGFvE';
+// Initialize for stable API (v1)
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 // ===== BIT BANK — Main JS =====
@@ -108,7 +108,9 @@ document.getElementById('loginForm')?.addEventListener('submit', (e) => {
   setTimeout(() => {
     loginGate.style.display = 'none';
     if (coinCanvas) coinCanvas.style.display = 'none';
-    document.getElementById('mainAppContainer').style.display = 'block';
+    const mainApp = document.getElementById('mainAppContainer');
+    mainApp.style.display = 'block';
+    mainApp.style.opacity = '1';
     
     // Initialize things that rely on visibility
     setTimeout(() => {
@@ -490,8 +492,8 @@ document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
   historyEl.scrollTop = historyEl.scrollHeight;
   
   try {
-    // Calling the 2026 high-volume preview model: gemini-3.1-flash-lite-preview on v1beta
-    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite-preview" }, { apiVersion: 'v1beta' });
+    // Calling the stable workhorse: gemini-2.5-flash on v1
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }, { apiVersion: 'v1' });
     const systemInstruction = "You are a Crypto Inheritance Guide for BitBank. You help users understand how to set up their digital inheritance, explain the verification process, and provide guidance on securing their crypto assets for their beneficiaries. Be concise and helpful.";
     
     const fullPrompt = `${systemInstruction}\n\nUser: ${msg}`;
