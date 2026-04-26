@@ -108,7 +108,10 @@ document.getElementById('loginForm')?.addEventListener('submit', (e) => {
   setTimeout(() => {
     loginGate.style.display = 'none';
     if (coinCanvas) coinCanvas.style.display = 'none';
-    document.getElementById('mainAppContainer').style.display = 'block';
+    
+    const mainApp = document.getElementById('mainAppContainer');
+    mainApp.classList.remove('hidden-initially');
+    mainApp.style.display = 'block';
     
     // Initialize things that rely on visibility
     setTimeout(() => {
