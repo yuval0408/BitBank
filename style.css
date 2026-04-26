@@ -91,6 +91,12 @@ body {
   display: block
 }
 
+#mainAppContainer {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 img {
   max-width: 100%;
   display: block
