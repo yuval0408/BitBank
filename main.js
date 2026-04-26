@@ -447,5 +447,44 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+// --- LEGACY ASSISTANT ---
+document.getElementById('sendChatBtn')?.addEventListener('click', async () => {
+  const inputEl = document.getElementById('chatInput');
+  const msg = inputEl.value.trim();
+  if (!msg) return;
+  
+  const historyEl = document.getElementById('chatHistory');
+  
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-message user';
+  userDiv.textContent = msg;
+  historyEl.appendChild(userDiv);
+  inputEl.value = '';
+  historyEl.scrollTop = historyEl.scrollHeight;
+  
+  const loadingDiv = document.createElement('div');
+  loadingDiv.className = 'chat-message ai';
+  loadingDiv.textContent = 'Thinking...';
+  historyEl.appendChild(loadingDiv);
+  historyEl.scrollTop = historyEl.scrollHeight;
+  
+  try {
+    const res = await fetch('http://localhost:3001/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: msg })
+    });
+    const data = await res.json();
+    loadingDiv.textContent = data.text || 'Error generating response.';
+  } catch (err) {
+    loadingDiv.textContent = 'Connection error. Make sure the API server is running on port 3001.';
+  }
+  historyEl.scrollTop = historyEl.scrollHeight;
+});
+
+document.getElementById('chatInput')?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') document.getElementById('sendChatBtn').click();
+});
+
 // --- Remove default Vite content ---
 document.getElementById('app')?.remove();
